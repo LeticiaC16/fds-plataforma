@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>FDS na Palma da Mão</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        input { padding: 10px; width: 300px; }
+        button { padding: 10px; }
+        #result { margin-top: 20px; }
+    </style>
+
+    <!-- Manifesto e Service Worker para PWA -->
+    <link rel="manifest" href="manifest.json">
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('service-worker.js')
+          .then(() => console.log("Service Worker registrado!"))
+          .catch(err => console.log("Erro ao registrar Service Worker", err));
+      }
+    </script>
+</head>
+<body>
+    <h1>Consulta de Ficha de Segurança (FDS)</h1>
+    <input type="text" id="searchInput" placeholder="Digite o nome do produto...">
+    <button onclick="buscarFDS()">Buscar</button>
+    <div id="result"></div>
+
+    <script>
+        // Mapeamento com nomes em letras minúsculas para facilitar a busca
+        const fdsMap = {
+            "ortonex 023": "FDS-ORTONEX-023.pdf",
+            "hipoclorito de cálcio 65": "FDS-HIPOCLORITO-65.pdf",
+            "tricloro": "FDS-TRICLORO.pdf"
+        };
+
+        function buscarFDS() {
+            const termo = document.getElementById("searchInput").value.toLowerCase().trim();
+            const resultado = document.getElementById("result");
+            if (fdsMap[termo]) {
+                resultado.innerHTML = `<p>FDS encontrada:</p><a href="${fdsMap[termo]}" target="_blank">Abrir FDS de ${termo.toUpperCase()}</a>`;
+            } else {
+                resultado.innerHTML = "<p>FDS não encontrada. Verifique o nome do produto.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
